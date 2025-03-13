@@ -83,8 +83,8 @@ npm run start:prod
 ```
 - **Description**: Retrieves all catalogs.
 
-### 3. Get a catalog by ID
-- **Endpoint**: `GET /catalogs/:id`
+### 3. Get a catalog by name
+- **Endpoint**: `GET /catalogs/{name}`
 - **Response**:
 ```json
 {
@@ -96,10 +96,10 @@ npm run start:prod
   "isMultiLocale": true
 }
 ```
-- **Description**: Retrieves a specific catalog by its ID.
+- **Description**: Retrieves a specific catalog by its name.
 
 ### 4. Update a catalog
-- **Endpoint**: `PUT /catalogs/:id`
+- **Endpoint**: `PUT /catalogs/{name}`
 - **Body**:
 ```json
 {
@@ -112,30 +112,21 @@ npm run start:prod
 - **Description**: Updates a catalog. If the catalog is set as primary, any existing primary catalog with the same vertical will be switched to non-primary.
 
 ### 5. Delete a catalog
-- **Endpoint**: `DELETE /catalogs/:id`
-- **Description**: Deletes a catalog by its ID.
+- **Endpoint**: `DELETE /catalogs/{name}`
+- **Description**: Deletes a catalog by its name.
 
 ### 6. Delete multiple catalogs (bulk)
-- **Endpoint**: `DELETE /catalogs/bulk`
+- **Endpoint**: `DELETE /catalogs`
 - **Body**:
 ```json
-{
-  "ids": ["12345", "67890"]
-}
+[
+  "name1",
+  "name2",
+   ...
+]
 ```
 - **Description**: Deletes multiple catalogs at once.
 
-## Testing
-
-To run the tests, use the following command:
-```bash
-npm run test
-```
-
-This will run the unit tests using **Jest**. You can also run tests in watch mode using:
-```bash
-npm run test:watch
-```
 
 ## API Documentation with Swagger
 
