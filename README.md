@@ -1,98 +1,148 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Catalogs API
+Overview
+This is a backend service for managing catalogs of products for clients. Each catalog contains metadata like name, vertical, locales, and a flag indicating whether it's the primary catalog for a particular vertical.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+The API is built using NodeJS with NestJS and MongoDB as the database.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Requirements
+Node.js: Version 16.x or above.
+MongoDB: Local MongoDB instance running on mongodb://localhost:27017/catalogsDB.
+Installation
+1. Clone the repository
+bash
+Copy
+Edit
+git clone <repository_url>
+2. Install dependencies
+Navigate to the project folder and install the required dependencies:
 
-## Description
+bash
+Copy
+Edit
+cd catalogs-api
+npm install
+3. Setup environment variables
+Create a .env file in the root directory of the project and add the following:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+bash
+Copy
+Edit
+MONGO_URI=mongodb://localhost:27017/catalogsDB
+4. Start MongoDB
+Ensure your local MongoDB instance is running:
 
-## Project setup
+bash
+Copy
+Edit
+mongod --dbpath=/path/to/your/data
+5. Run the application
+Start the application in development mode:
 
-```bash
-$ npm install
-```
+bash
+Copy
+Edit
+npm run start:dev
+6. Build the project
+To build the project for production:
 
-## Compile and run the project
+bash
+Copy
+Edit
+npm run build
+npm run start:prod
+API Endpoints
+1. Add a new catalog
+Endpoint: POST /catalogs
+Body:
+json
+Copy
+Edit
+{
+  "name": "summer_collection",
+  "vertical": "fashion",
+  "locales": ["en_US", "es_ES"],
+  "isPrimary": true
+}
+Description: Adds a new catalog. If the catalog is primary, any existing primary catalog with the same vertical will be switched to non-primary.
+2. Get all catalogs
+Endpoint: GET /catalogs
+Response:
+json
+Copy
+Edit
+[
+  {
+    "_id": "12345",
+    "name": "summer_collection",
+    "vertical": "fashion",
+    "locales": ["en_US", "es_ES"],
+    "isPrimary": true,
+    "isMultiLocale": true
+  }
+]
+Description: Retrieves all catalogs.
+3. Get a catalog by ID
+Endpoint: GET /catalogs/:id
+Response:
+json
+Copy
+Edit
+{
+  "_id": "12345",
+  "name": "summer_collection",
+  "vertical": "fashion",
+  "locales": ["en_US", "es_ES"],
+  "isPrimary": true,
+  "isMultiLocale": true
+}
+Description: Retrieves a specific catalog by its ID.
+4. Update a catalog
+Endpoint: PUT /catalogs/:id
+Body:
+json
+Copy
+Edit
+{
+  "name": "summer_collection_updated",
+  "vertical": "fashion",
+  "locales": ["en_US"],
+  "isPrimary": true
+}
+Description: Updates a catalog. If the catalog is set as primary, any existing primary catalog with the same vertical will be switched to non-primary.
+5. Delete a catalog
+Endpoint: DELETE /catalogs/:id
+Description: Deletes a catalog by its ID.
+6. Delete multiple catalogs (bulk)
+Endpoint: DELETE /catalogs/bulk
+Body:
+json
+Copy
+Edit
+{
+  "ids": ["12345", "67890"]
+}
+Description: Deletes multiple catalogs at once.
+Testing
+To run the tests, use the following command:
 
-```bash
-# development
-$ npm run start
+bash
+Copy
+Edit
+npm run test
+This will run the unit tests using Jest. You can also run tests in watch mode using:
 
-# watch mode
-$ npm run start:dev
+bash
+Copy
+Edit
+npm run test:watch
+API Documentation with Swagger
+Once the server is running, the Swagger UI will be available at:
 
-# production mode
-$ npm run start:prod
-```
+bash
+Copy
+Edit
+http://localhost:3000/api
+You can interact with the API directly through this interface.
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+License
+This project is licensed under the UNLICENSED license.
