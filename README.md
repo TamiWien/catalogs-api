@@ -16,7 +16,7 @@ The API is built using **NodeJS** with **NestJS** and **MongoDB** as the databas
 
 ### 1. Clone the repository
 ```bash
-git clone <repository_url>
+git clone <https://github.com/TamiWien/catalogs-api.git>
 ```
 
 ### 2. Install dependencies
